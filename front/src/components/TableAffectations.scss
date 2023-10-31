@@ -1,0 +1,48 @@
+.container {
+  width: 100%;
+  overflow-x: auto;
+  padding: 2rem;
+}
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+  height: min-content;
+  width: 100%;
+
+  th,
+  td {
+    border: 1px solid #ccc;
+    padding: 8px;
+    width: 30px;
+    height: 30px;
+    align-items: center;
+    text-align: center;
+  }
+
+  .hide {
+    display: none;
+  }
+
+  .morning {
+    background-color: #FFECCF;
+  }
+
+  .night {
+    background-color: #F4E2FF;
+  }
+
+  .day {
+    background-color: #E2F6FF;
+  }
+
+  .rest {
+    background-color: #EFEFEF;
+  }
+
+  td:first-child {
+    border-right: none; // Supprimer la bordure à droite de la première colonne
+  }
+
+  overflow-x: auto; // Activer la barre de défilement horizontal
+}
