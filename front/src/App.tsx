@@ -1,7 +1,7 @@
 import React from "react";
 import SideMenu from "./components/SideMenu";
 import { AffectationTable } from "./components/AffectationsTable";
-import { AppBar, Box, CssBaseline, ThemeProvider } from "@mui/material";
+import { AppBar, Box, Button, CssBaseline, ThemeProvider } from "@mui/material";
 import { theme } from "./theme";
 
 function App() {
@@ -22,7 +22,12 @@ function App() {
                 </AppBar>
                 <Box sx={{ display: "flex", height: "calc(100vh - 60px)" }}>
                     <SideMenu />
-                    <AffectationTable />
+                    <Box sx={{ p: 4 }}>
+                        <AffectationTable />
+                        <Button variant="contained" sx={{ mt: 2 }}>
+                            Ajouter une contrainte
+                        </Button>
+                    </Box>
                 </Box>
             </ThemeProvider>
         </>
