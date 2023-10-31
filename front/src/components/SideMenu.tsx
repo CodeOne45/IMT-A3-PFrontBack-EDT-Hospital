@@ -6,7 +6,7 @@ export default function SideMenu() {
     return (
         <Box
             sx={{
-                width: "250px",
+                width: "300px",
                 boxShadow: "0px 0px 12px 0px rgba(0, 0, 0, 0.70)",
                 height: "100vh",
             }}
