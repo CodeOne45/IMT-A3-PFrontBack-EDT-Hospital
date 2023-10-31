@@ -1,6 +1,7 @@
 import React from "react";
 import SideMenu from "./components/SideMenu";
-import { CssBaseline, ThemeProvider } from "@mui/material";
+import { AffectationTable } from "./components/AffectationsTable";
+import { Box, CssBaseline, ThemeProvider } from "@mui/material";
 import { theme } from "./theme";
 
 function App() {
@@ -8,7 +9,10 @@ function App() {
         <>
             <ThemeProvider theme={theme}>
                 <CssBaseline />
-                <SideMenu />
+                <Box sx={{ display: "flex" }}>
+                    <SideMenu />
+                    <AffectationTable />
+                </Box>
             </ThemeProvider>
         </>
     );
