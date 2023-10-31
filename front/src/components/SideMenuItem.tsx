@@ -14,7 +14,7 @@ export default function SideMenuItem(props: SideMenuItemProps) {
                 sx={{
                     width: "25px",
                     height: "25px",
-                    bgcolor: "red",
+                    bgcolor: "secondary.main",
                     mr: 1,
                     fontSize: "17px",
                 }}
