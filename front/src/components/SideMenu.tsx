@@ -8,7 +8,7 @@ export default function SideMenu() {
             sx={{
                 width: "300px",
                 boxShadow: "0px 0px 12px 0px rgba(0, 0, 0, 0.70)",
-                height: "100vh",
+                height: "100%",
             }}
         >
             <List>
