@@ -16,13 +16,19 @@ function App() {
                         display: "flex",
                         justifyContent: "center",
                         padding: "10px",
+                        pl: 2,
                     }}
                 >
                     Hospital Planning
                 </AppBar>
-                <Box sx={{ display: "flex", height: "calc(100vh - 60px)" }}>
+                <Box
+                    sx={{
+                        display: "flex",
+                        height: "calc(100vh - 60px)",
+                    }}
+                >
                     <SideMenu />
-                    <Box sx={{ p: 4 }}>
+                    <Box sx={{ p: 4, overflowX: "scroll" }}>
                         <AffectationTable />
                         <Button variant="contained" sx={{ mt: 2 }}>
                             Ajouter une contrainte
