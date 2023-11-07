@@ -1,0 +1,72 @@
+.version {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  border-radius: 10px;
+
+  &-selected {
+    border: #E12355 4px solid;
+  }
+
+  &__number {
+    margin: 0;
+    ;
+    align-self: center;
+  }
+
+  &__container {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    margin: .5rem;
+    width: 107px;
+    height: 107px;
+    flex-shrink: 0;
+    align-items: center;
+    background-color: #3C8080;
+    border-radius: 10px;
+
+  }
+}
+
+.line {
+  position: relative;
+  background-color: #fff;
+  display: flex;
+  z-index: 1;
+
+  &-vertical {
+    width: 3.5px;
+    height: 100%;
+  }
+
+  &-horizontal {
+    flex-direction: column;
+    width: 100%;
+    height: 3.5px;
+  }
+
+  &-container {
+    display: flex;
+    padding: 10%;
+
+    width: 100%;
+    height: 100%;
+    justify-content: space-between;
+    position: absolute;
+
+    align-items: center;
+
+    &-h {
+      flex-direction: column;
+    }
+
+    &-v {
+      flex-direction: row;
+    }
+
+  }
+}
