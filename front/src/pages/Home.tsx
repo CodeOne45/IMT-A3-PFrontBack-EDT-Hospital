@@ -3,7 +3,7 @@ import { useState } from "react";
 import SideMenu from "../components/SideMenu";
 import { AffectationTable } from "../components/AffectationsTable";
 import CloseIcon from "@mui/icons-material/Close";
-import ConstraintList from "../components/ConstraintList";
+import ConstraintList from "../components/CreateConstraintList";
 import { VersionComponent } from "../components/Version";
 import AddIcon from "@mui/icons-material/Add";
 

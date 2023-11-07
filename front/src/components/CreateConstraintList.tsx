@@ -1,5 +1,5 @@
 import React from "react";
-import ConstraintItem from "./ConstraintItem";
+import ConstraintItem from "./CreateConstraintItem";
 import { Box, Typography } from "@mui/material";
 import AssignShift from "../pages/constraints/AssignShift";
 
