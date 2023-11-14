@@ -1,1 +1,1 @@
-export const endPoint = "http://localhost:8000/v1/api";
+export const endPoint = "http://localhost:8000/api/v1";
