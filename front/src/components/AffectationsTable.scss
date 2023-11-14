@@ -24,20 +24,20 @@ table {
         display: none;
     }
 
-    .morning {
-        background-color: #ffeccf;
-    }
-
     .night {
-        background-color: #f4e2ff;
-    }
-
-    .day {
         background-color: #e2f6ff;
     }
 
     .rest {
         background-color: #efefef;
+    }
+
+    .evening {
+        background-color: #f4e2ff;
+    }
+
+    .morning {
+        background-color: #ffeccf;
     }
 
     td:first-child {

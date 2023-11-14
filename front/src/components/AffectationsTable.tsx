@@ -3,81 +3,73 @@ import LightModeIcon from "@mui/icons-material/LightMode";
 import NightsStayIcon from "@mui/icons-material/NightsStay";
 import WbTwilightIcon from "@mui/icons-material/WbTwilight";
 
+import { Schedule } from "../types";
 import "./AffectationsTable.scss";
-export const AffectationTable = () => {
-    function generateRandomValue() {
-        const values = [
-            <LightModeIcon key={"D"} />,
-            <HotelIcon key={"R"} />,
-            <WbTwilightIcon key={"M"} />,
-            <NightsStayIcon key={"N"} />,
-        ];
-        const randomIndex = Math.floor(Math.random() * values.length);
-        return values[randomIndex];
-    }
-    const valueToClass = (value: string) => {
-        switch (value) {
-            case "D":
-                return "day";
-            case "M":
-                return "morning";
-            case "N":
-                return "night";
-            case "R":
-                return "rest";
-            default:
-                return "";
-        }
-    };
+export const AffectationTable = ({ schedule }: { schedule: Schedule }) => {
+  console.log(schedule);
 
-    const dayTable = [];
-    for (let i = 0; i < 28; i++) {
-        dayTable.push(<th key={i}>J{i + 1}</th>);
+  if (!schedule) {
+    return <></>;
+  }
+
+  const valueToClass = (value: string) => {
+    switch (value) {
+      case "N":
+        return "night";
+      case "R":
+        return "rest";
+      case "E":
+        return "evening";
+      case "M":
+        return "morning";
     }
-    const affectations = [
-        {
-            name: "Marie",
-            days: Array.from({ length: 28 }, () => generateRandomValue()),
-        },
-        {
-            name: "Juliette",
-            days: Array.from({ length: 28 }, () => generateRandomValue()),
-        },
-        {
-            name: "Christelle",
-            days: Array.from({ length: 28 }, () => generateRandomValue()),
-        },
-        {
-            name: "Jean",
-            days: Array.from({ length: 28 }, () => generateRandomValue()),
-        },
-    ];
-    return (
-        <div className="container">
-            <table>
-                <thead>
-                    <tr>
-                        {/* make a for loop from 0 to 28 */}
-                        <tr></tr>
-                        {dayTable}
-                    </tr>
-                </thead>
-                <tbody>
-                    {affectations.map((affectation) => (
-                        <tr key={affectation.name}>
-                            <td>{affectation.name}</td>
-                            {affectation.days.map((day, index) => (
-                                <td
-                                    className={valueToClass(day.key ?? "")}
-                                    key={index}
-                                >
-                                    {day}
-                                </td>
-                            ))}
-                        </tr>
-                    ))}
-                </tbody>
-            </table>
-        </div>
-    );
+  };
+
+  const dayTable = [];
+  for (let i = 0; i < schedule.schedule[0].length; i++) {
+    dayTable.push(<th key={i}>J{i + 1}</th>);
+  }
+  const affectations = schedule.schedule.map((affectation, i) => ({
+    name: `Nurse ${i}`,
+    days: affectation.split("").map((day) => {
+      switch (day) {
+        case "N":
+          return <NightsStayIcon key={"N"} />;
+        case "R":
+          return <HotelIcon key={"R"} />;
+        case "E":
+          return <LightModeIcon key={"E"} />;
+        case "M":
+          return <WbTwilightIcon key={"M"} />;
+        default:
+          return <>{day}</>;
+      }
+    }),
+  }));
+
+  return (
+    <div className="container">
+      <table>
+        <thead>
+          <tr>
+            <td></td>
+            {/* make a for loop from 0 to 28 */}
+            {dayTable}
+          </tr>
+        </thead>
+        <tbody>
+          {affectations.map((affectation) => (
+            <tr key={affectation.name}>
+              <td>{affectation.name}</td>
+              {affectation.days.map((day, index) => (
+                <td className={valueToClass(day.key ?? "")} key={index}>
+                  {day}
+                </td>
+              ))}
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
 };
