@@ -1,9 +1,9 @@
-import React from "react";
-import ConstraintItem from "./CreateConstraintItem";
 import { Box, Typography } from "@mui/material";
+import React from "react";
 import AssignShift from "../pages/constraints/AssignShift";
+import ConstraintItem from "./CreateConstraintItem";
 
-export default function ConstraintList() {
+export default function CreateConstraintList() {
     const [component, setComponent] = React.useState<any>(null);
 
     const handleBack = () => {

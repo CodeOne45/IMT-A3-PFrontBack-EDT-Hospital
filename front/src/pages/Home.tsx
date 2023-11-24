@@ -2,10 +2,11 @@ import CloseIcon from "@mui/icons-material/Close";
 import { AppBar, Box, Button, IconButton, Modal } from "@mui/material";
 import { useEffect, useState } from "react";
 import { AffectationTable } from "../components/AffectationsTable";
-import ConstraintList from "../components/CreateConstraintList";
+import CreateConstraintList from "../components/CreateConstraintList";
 import SideMenu from "../components/SideMenu";
 
 import { VersionsList } from "../components/VersionsList";
+import { ConstraintsList } from "../components/constraints/ConstraintsList";
 import { endPoint } from "../config";
 import { useSchedules } from "../contexts/SchedulesContext";
 
@@ -37,6 +38,10 @@ export default function Home() {
       });
   }, []);
 
+  if (schedules.length === 0) {
+    return <></>;
+  }
+
   return (
     <>
       <AppBar
@@ -58,7 +63,7 @@ export default function Home() {
         }}
       >
         <SideMenu />
-        <Box sx={{ p: 4, overflowX: "scroll" }}>
+        <Box sx={{ p: 4, overflowX: "scroll" , flex:1}}>
           <Box sx={{ display: "flex", alignItems: "center" }}>
             <VersionsList
               versions={schedules.length}
@@ -70,6 +75,7 @@ export default function Home() {
           <Button variant="contained" sx={{ mt: 2 }} onClick={handleOpenModal}>
             Ajouter une contrainte
           </Button>
+          <ConstraintsList constraints={schedules[selectedVerison].constraints} />
         </Box>
       </Box>
       <Modal
@@ -103,7 +109,7 @@ export default function Home() {
           >
             <CloseIcon />
           </IconButton>
-          <ConstraintList />
+          <CreateConstraintList />
         </Box>
       </Modal>
     </>

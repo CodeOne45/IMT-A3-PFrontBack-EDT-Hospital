@@ -9,12 +9,18 @@ export const ConstraintsListItem = ({
   constraint: Constraint;
 }) => {
   return (
-    <Box sx={{
-      display: "flex",
-      flex: "1 1 0",
-      alignContent: "center",
-      alignItems: "center",
-    }}>
+    <Box
+      sx={{
+        display: "flex",
+        flex: "1 1 0",
+        alignContent: "center",
+        alignItems: "center",
+        borderColor: "#f0F0F0",
+        borderWidth: "2px",
+        borderStyle: "solid",
+        margin: "10px",
+      }}
+    >
       <Button
         onClick={() => onRemove(constraint)}
         sx={{ display: "flex", alignItems: "center", height: "50px" }}
@@ -31,7 +37,17 @@ export const ConstraintsListItem = ({
           X
         </Avatar>
       </Button>
-        <Typography sx={{ fontSize: "24px" }}>{constraint.name}</Typography>
+      <Typography>
+        <p>{constraint.desc}</p>
+        {constraint.nurses.length > 0 ? (
+          <p>
+            Nurses involved : {constraint.nurses?.map((nurse) => nurse + ", ")}
+          </p>
+        ) : (
+          <></>
+        )}
+        {JSON.stringify(constraint)}
+      </Typography>
     </Box>
   );
 };
