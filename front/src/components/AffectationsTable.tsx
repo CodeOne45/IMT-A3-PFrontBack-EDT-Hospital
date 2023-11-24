@@ -30,7 +30,7 @@ export const AffectationTable = ({ schedule }: { schedule: Schedule }) => {
     dayTable.push(<th key={i}>J{i + 1}</th>);
   }
   const affectations = schedule.schedule.map((affectation, i) => ({
-    name: `Nurse ${i}`,
+    name: `Nurse ${i+1}`,
     days: affectation.split("").map((day) => {
       switch (day) {
         case "N":
