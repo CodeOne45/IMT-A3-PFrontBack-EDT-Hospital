@@ -7,9 +7,11 @@ import SideMenu from "../components/SideMenu";
 
 import { VersionsList } from "../components/VersionsList";
 import { endPoint } from "../config";
+import { useSchedules } from "../contexts/SchedulesContext";
 
 export default function Home() {
-  const [versions, setVersions] = useState([]);
+  const { initSchedules, schedules } = useSchedules();
+
   const [selectedVerison, setSelectedVersion] = useState(0); // [0, 1, 2, 3]
   const [openModal, setOpenModal] = useState(false);
 
@@ -27,7 +29,7 @@ export default function Home() {
     })
       .then((response) => response.json())
       .then((data) => {
-        setVersions(data);
+        initSchedules(data);
         console.log(data);
       })
       .catch((error) => {
@@ -58,9 +60,13 @@ export default function Home() {
         <SideMenu />
         <Box sx={{ p: 4, overflowX: "scroll" }}>
           <Box sx={{ display: "flex", alignItems: "center" }}>
-            <VersionsList versions={versions.length} selectedVersion={selectedVerison} onSelectVersion={(index) => setSelectedVersion(index)}  />
+            <VersionsList
+              versions={schedules.length}
+              selectedVersion={selectedVerison}
+              onSelectVersion={(index) => setSelectedVersion(index)}
+            />
           </Box>
-          <AffectationTable schedule={versions[selectedVerison]} />
+          <AffectationTable schedule={schedules[selectedVerison]} />
           <Button variant="contained" sx={{ mt: 2 }} onClick={handleOpenModal}>
             Ajouter une contrainte
           </Button>
