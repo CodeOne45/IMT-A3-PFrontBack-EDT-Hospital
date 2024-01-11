@@ -54,15 +54,17 @@ export const AffectationTableItem = ({
     <tr key={affectation.name}>
       <td>{affectation.name}</td>
       {affectation.days.map((day, iJours) => (
-        <td className={valueToClass(day.key ?? "")} key={iNurse}>
+        <td className={valueToClass(day.key ?? "")} key={`${iNurse}${iJours}`} style={{ position:"relative"}}>
           {areRecommandationsShowed &&
           recommandations.find(
             (r) => r.shift?.day === iJours + 1 && r.shift.nurse === iNurse + 1
           ) ? (
-            <Box sx={{ display: "inline-block" }}>
+            <>
               <Box
                 sx={{
-                  transform: "scale(0.6, 0.6) translate(100%, -50%)",
+                  transform: "scale(0.6, 0.6) ",
+                  top: 0,
+                  right: 0,
                   position: "absolute",
                   cursor: "help",
                 }}
@@ -96,7 +98,7 @@ export const AffectationTableItem = ({
                   )?.text
                 }
               </Popover>
-            </Box>
+            </>
           ) : null}
           {day}
         </td>
