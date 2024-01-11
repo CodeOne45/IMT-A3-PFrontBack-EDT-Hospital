@@ -1,15 +1,18 @@
 import { CssBaseline, ThemeProvider } from "@mui/material";
-import { theme } from "./theme";
-import Home from "./pages/Home";
+import { RecommandationsContextProvider } from "./contexts/RecommandationsContext";
 import { SchedulesContextProvider } from "./contexts/SchedulesContext";
+import Home from "./pages/Home";
+import { theme } from "./theme";
 
 function App() {
   return (
     <>
       <ThemeProvider theme={theme}>
         <SchedulesContextProvider>
-          <CssBaseline />
-          <Home />
+          <RecommandationsContextProvider>
+            <CssBaseline />
+            <Home />
+          </RecommandationsContextProvider>
         </SchedulesContextProvider>
       </ThemeProvider>
     </>

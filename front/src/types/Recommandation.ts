@@ -9,5 +9,4 @@ export default interface Recommandation {
   }],
   text?: string,
   type?: number
-
-}  
+}

@@ -3,34 +3,29 @@ import LightModeIcon from "@mui/icons-material/LightMode";
 import NightsStayIcon from "@mui/icons-material/NightsStay";
 import WbTwilightIcon from "@mui/icons-material/WbTwilight";
 
-import { Schedule } from "../types";
+import { Schedule } from "../../types";
 import "./AffectationsTable.scss";
+import { AffectationTableItem } from "./AffectationsTableItem";
 export const AffectationTable = ({ schedule }: { schedule: Schedule }) => {
-  console.log(schedule);
 
   if (!schedule) {
     return <></>;
   }
-
-  const valueToClass = (value: string) => {
-    switch (value) {
-      case "N":
-        return "night";
-      case "R":
-        return "rest";
-      case "E":
-        return "evening";
-      case "M":
-        return "morning";
-    }
-  };
+  const recomm = schedule.recommendations.map((r) => {
+    const ret = {
+      text: r.text,
+      shift: r.shifts?.[0],
+    };
+    return ret;
+  });
+  
 
   const dayTable = [];
   for (let i = 0; i < schedule.schedule[0].length; i++) {
     dayTable.push(<th key={i}>J{i + 1}</th>);
   }
   const affectations = schedule.schedule.map((affectation, i) => ({
-    name: `Nurse ${i+1}`,
+    name: `Nurse ${i + 1}`,
     days: affectation.split("").map((day) => {
       switch (day) {
         case "N":
@@ -58,15 +53,13 @@ export const AffectationTable = ({ schedule }: { schedule: Schedule }) => {
           </tr>
         </thead>
         <tbody>
-          {affectations.map((affectation) => (
-            <tr key={affectation.name}>
-              <td>{affectation.name}</td>
-              {affectation.days.map((day, index) => (
-                <td className={valueToClass(day.key ?? "")} key={index}>
-                  {day}
-                </td>
-              ))}
-            </tr>
+          {affectations.map((affectation, iNurse) => (
+            <AffectationTableItem
+              key={affectation.name}
+              recommandations={recomm}
+              affectation={affectation}
+              iNurse={iNurse}
+            />
           ))}
         </tbody>
       </table>

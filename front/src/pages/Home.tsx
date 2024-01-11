@@ -1,13 +1,22 @@
 import CloseIcon from "@mui/icons-material/Close";
-import { AppBar, Box, Button, IconButton, Modal } from "@mui/material";
+import {
+  AppBar,
+  Box,
+  Button,
+  FormControlLabel,
+  IconButton,
+  Modal,
+  Switch,
+} from "@mui/material";
 import { useEffect, useState } from "react";
-import { AffectationTable } from "../components/AffectationsTable";
 import CreateConstraintList from "../components/CreateConstraintList";
 import SideMenu from "../components/SideMenu";
+import { AffectationTable } from "../components/affectationsTable/AffectationsTable";
 
 import { VersionsList } from "../components/VersionsList";
 import { ConstraintsList } from "../components/constraints/ConstraintsList";
 import { endPoint } from "../config";
+import { useRecommandations } from "../contexts/RecommandationsContext";
 import { useSchedules } from "../contexts/SchedulesContext";
 
 export default function Home() {
@@ -15,7 +24,8 @@ export default function Home() {
 
   const [selectedVerison, setSelectedVersion] = useState(0); // [0, 1, 2, 3]
   const [openModal, setOpenModal] = useState(false);
-
+  const { areRecommandationsShowed, switchShowRecommandations } =
+    useRecommandations();
   const handleOpenModal = () => {
     setOpenModal(true);
   };
@@ -31,7 +41,6 @@ export default function Home() {
       .then((response) => response.json())
       .then((data) => {
         initSchedules(data);
-        console.log(data);
       })
       .catch((error) => {
         console.error("Error:", error);
@@ -63,7 +72,7 @@ export default function Home() {
         }}
       >
         <SideMenu />
-        <Box sx={{ p: 4, overflowX: "scroll" , flex:1}}>
+        <Box sx={{ p: 4, overflowX: "scroll", flex: 1 }}>
           <Box sx={{ display: "flex", alignItems: "center" }}>
             <VersionsList
               versions={schedules.length}
@@ -71,11 +80,25 @@ export default function Home() {
               onSelectVersion={(index) => setSelectedVersion(index)}
             />
           </Box>
+          {/* switch to enable or not the recommandations */}
+          <FormControlLabel
+            control={
+              <Switch
+                checked={areRecommandationsShowed}
+                onChange={() => switchShowRecommandations()}
+                name="checkedB"
+                color="primary"
+              />
+            }
+            label="Recommandation"
+          />
           <AffectationTable schedule={schedules[selectedVerison]} />
           <Button variant="contained" sx={{ mt: 2 }} onClick={handleOpenModal}>
             Ajouter une contrainte
           </Button>
-          <ConstraintsList constraints={schedules[selectedVerison].constraints} />
+          <ConstraintsList
+            constraints={schedules[selectedVerison].constraints}
+          />
         </Box>
       </Box>
       <Modal
