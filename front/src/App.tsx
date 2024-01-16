@@ -1,22 +1,10 @@
-import { CssBaseline, ThemeProvider } from "@mui/material";
-import { RecommandationsContextProvider } from "./contexts/RecommandationsContext";
-import { SchedulesContextProvider } from "./contexts/SchedulesContext";
+import { useUpdatedConstraints } from "./contexts/UpdatedConstraintsContext";
 import Home from "./pages/Home";
-import { theme } from "./theme";
 
 function App() {
-  return (
-    <>
-      <ThemeProvider theme={theme}>
-        <SchedulesContextProvider>
-          <RecommandationsContextProvider>
-            <CssBaseline />
-            <Home />
-          </RecommandationsContextProvider>
-        </SchedulesContextProvider>
-      </ThemeProvider>
-    </>
-  );
+  const { init } = useUpdatedConstraints();
+  init();
+  return <Home />;
 }
 
 export default App;
