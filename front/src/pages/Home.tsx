@@ -22,7 +22,7 @@ import { useSchedules } from "../contexts/SchedulesContext";
 export default function Home() {
   const { initSchedules, schedules } = useSchedules();
 
-  const [selectedVersion, setSelectedVersion] = useState(0); // [0, 1, 2, 3]
+  const [selectedVersion, setSelectedVersion] = useState(schedules.length - 1); // [0, 1, 2, 3]
 
   const isSelectedVersionLast = () => {
     return selectedVersion === schedules.length - 1;
