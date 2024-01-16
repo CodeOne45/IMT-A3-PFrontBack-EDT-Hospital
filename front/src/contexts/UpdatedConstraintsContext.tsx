@@ -1,9 +1,10 @@
 import { createContext, useContext, useState } from "react";
+import { Constraint } from "../types";
 
 interface UpdatedConstraintsContextProps {
+  addedConstraints: Constraint[]; // list of  contstraints
   removedConstraints: string[]; // list of  string ids
-  addedConstraints: string[]; // list of  string ids listed by versio
-  setAddedConstraints: (constraints: string[]) => void;
+  setAddedConstraints: (constraints: Constraint[]) => void;
   setRemovedConstraints: (constraints: string[]) => void;
   reset: () => void;
   init: () => void;
@@ -11,8 +12,8 @@ interface UpdatedConstraintsContextProps {
 
 const UpdatedConstraintsContext = createContext<UpdatedConstraintsContextProps>(
   {
-    removedConstraints: [],
-    addedConstraints: [],
+    removedConstraints: [], // liste des ids des contraintes à suppirmer los de la prochaine version
+    addedConstraints: [], // liste des ids des contraintes à ajouter lors de la prochaine version
     setAddedConstraints: () => {},
     setRemovedConstraints: () => {},
     reset: () => {},
@@ -25,21 +26,35 @@ export const UpdatedConstraintsContextProvider = ({
 }: {
   children: React.ReactNode;
 }) => {
-  const [removedConstraints, setRemovedConstraints] = useState<string[]>([]);
-  const [addedConstraints, setAddedConstraints] = useState<string[]>([]);
+  const [removedConstraints, _setRemovedConstraints] = useState<string[]>([]);
+  const [addedConstraints, _setAddedConstraints] = useState<Constraint[]>([]);
 
   const reset = () => {
-    setRemovedConstraints([]);
-    setAddedConstraints([]);
+    _setRemovedConstraints([]);
+    _setAddedConstraints([]);
   };
 
   const init = () => {
-    setRemovedConstraints(
+
+    _setRemovedConstraints(
       JSON.parse(localStorage.getItem("removedConstraints") || "[]") as string[]
     );
-    setAddedConstraints(
-      JSON.parse(localStorage.getItem("addedConstraints") || "[]") as string[]
+    _setAddedConstraints(
+      JSON.parse(
+        localStorage.getItem("addedConstraints") || "[]"
+      ) as Constraint[]
     );
+    console.log(localStorage.getItem("removedConstraints"));
+  };
+
+  const setRemovedConstraints = (constraints: string[]) => {
+    localStorage.setItem("removedConstraints", JSON.stringify(constraints));
+    _setRemovedConstraints(constraints);
+  };
+
+  const setAddedConstraints = (constraints: Constraint[]) => {
+    localStorage.setItem("addedConstraints", JSON.stringify(constraints));
+    _setAddedConstraints(constraints);
   };
 
   return (
