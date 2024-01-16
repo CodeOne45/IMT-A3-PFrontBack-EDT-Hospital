@@ -4,9 +4,11 @@ import { Constraint } from "../../types";
 export const ConstraintsListItem = ({
   onRemove,
   constraint,
+  canRemove,
 }: {
   onRemove: (cons: Constraint) => void;
   constraint: Constraint;
+  canRemove: boolean;
 }) => {
   return (
     <Box
@@ -19,25 +21,28 @@ export const ConstraintsListItem = ({
         borderWidth: "2px",
         borderStyle: "solid",
         margin: "10px",
+        height: "50px",
       }}
     >
-      <Button
-        onClick={() => onRemove(constraint)}
-        sx={{ display: "flex", alignItems: "center", height: "50px" }}
-      >
-        <Avatar
-          sx={{
-            width: "25px",
-            height: "25px",
-            bgcolor: "secondary.main",
-            mr: 1,
-            fontSize: "17px",
-          }}
+      {canRemove && (
+        <Button
+          onClick={() => onRemove(constraint)}
+          sx={{ display: "flex", alignItems: "center", height: "50px" }}
         >
-          X
-        </Avatar>
-      </Button>
-      <Typography>
+          <Avatar
+            sx={{
+              width: "25px",
+              height: "25px",
+              bgcolor: "secondary.main",
+              mr: 1,
+              fontSize: "17px",
+            }}
+          >
+            X
+          </Avatar>
+        </Button>
+      )}
+      <Typography sx={{ marginLeft: canRemove ? "" : "15px" }}>
         {constraint.desc}
       </Typography>
     </Box>

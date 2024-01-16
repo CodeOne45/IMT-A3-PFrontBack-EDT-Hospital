@@ -4,9 +4,11 @@ import { ConstraintsListItem } from "./ConstraintsListItem";
 export const ConstraintsList = ({
   constraints,
   onUpdateConstraints,
+  isLastVersion,
 }: {
   constraints: Constraint[];
   onUpdateConstraints: (constraints: Constraint[]) => void;
+  isLastVersion: boolean;
 }) => {
   let constraintsByType: { [key: string]: Constraint[] } = {};
   // regrouper les contraintes par type
@@ -33,6 +35,7 @@ export const ConstraintsList = ({
               key={`${type}${constraint.desc}`}
               constraint={constraint}
               onRemove={removeConstraint}
+              canRemove={isLastVersion}
             />
           ))}
         </div>

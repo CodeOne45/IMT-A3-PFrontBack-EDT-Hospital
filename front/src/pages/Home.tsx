@@ -24,6 +24,10 @@ export default function Home() {
 
   const [selectedVersion, setSelectedVersion] = useState(0); // [0, 1, 2, 3]
 
+  const isSelectedVersionLast = () => {
+    return selectedVersion === schedules.length - 1;
+  };
+
   const [openModal, setOpenModal] = useState(false);
   const { areRecommandationsShowed, switchShowRecommandations } =
     useRecommandations();
@@ -104,9 +108,17 @@ export default function Home() {
             label="Recommandation"
           />
           <AffectationTable schedule={schedules[selectedVersion]} />
-          <Button variant="contained" sx={{ mt: 2 }} onClick={handleOpenModal}>
-            Ajouter une contrainte
-          </Button>
+          {isSelectedVersionLast() ? (
+            <Button
+              variant="contained"
+              sx={{ mt: 2 }}
+              onClick={handleOpenModal}
+            >
+              Ajouter une contrainte
+            </Button>
+          ) : (
+            <></>
+          )}
           <ConstraintsList
             constraints={schedules[selectedVersion].constraints}
             onUpdateConstraints={(constraints) => {
@@ -114,6 +126,7 @@ export default function Home() {
               newSchedules[selectedVersion].constraints = constraints;
               initSchedules(newSchedules);
             }}
+            isLastVersion={isSelectedVersionLast()}
           />
         </Box>
       </Box>
