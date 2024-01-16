@@ -22,7 +22,8 @@ import { useSchedules } from "../contexts/SchedulesContext";
 export default function Home() {
   const { initSchedules, schedules } = useSchedules();
 
-  const [selectedVerison, setSelectedVersion] = useState(0); // [0, 1, 2, 3]
+  const [selectedVersion, setSelectedVersion] = useState(0); // [0, 1, 2, 3]
+
   const [openModal, setOpenModal] = useState(false);
   const { areRecommandationsShowed, switchShowRecommandations } =
     useRecommandations();
@@ -40,7 +41,17 @@ export default function Home() {
     })
       .then((response) => response.json())
       .then((data) => {
-        initSchedules(data);
+        if (data.length !== 0) {
+          initSchedules(data);
+          return;
+        }
+        fetch(`${endPoint}/`, {
+          method: "GET",
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            initSchedules([data]);
+          });
       })
       .catch((error) => {
         console.error("Error:", error);
@@ -76,7 +87,7 @@ export default function Home() {
           <Box sx={{ display: "flex", alignItems: "center" }}>
             <VersionsList
               versions={schedules.length}
-              selectedVersion={selectedVerison}
+              selectedVersion={selectedVersion}
               onSelectVersion={(index) => setSelectedVersion(index)}
             />
           </Box>
@@ -92,12 +103,17 @@ export default function Home() {
             }
             label="Recommandation"
           />
-          <AffectationTable schedule={schedules[selectedVerison]} />
+          <AffectationTable schedule={schedules[selectedVersion]} />
           <Button variant="contained" sx={{ mt: 2 }} onClick={handleOpenModal}>
             Ajouter une contrainte
           </Button>
           <ConstraintsList
-            constraints={schedules[selectedVerison].constraints}
+            constraints={schedules[selectedVersion].constraints}
+            onUpdateConstraints={(constraints) => {
+              let newSchedules = [...schedules];
+              newSchedules[selectedVersion].constraints = constraints;
+              initSchedules(newSchedules);
+            }}
           />
         </Box>
       </Box>
