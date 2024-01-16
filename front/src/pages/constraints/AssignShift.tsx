@@ -21,14 +21,18 @@ import { useState } from "react";
 interface AssignShiftProps {
   onBack: () => void;
   title: string;
+  // id: string;
 }
 
 export default function AssignShift(props: AssignShiftProps) {
   const { onBack, title } = props;
 
   const { schedules } = useSchedules();
-  const currentSchedule = schedules[0];
-  const [constraits, setConstraints] = useState(mockConstraints);
+  const currentSchedule = schedules[schedules.length - 1];
+
+  console.log("currentSchedule", currentSchedule);
+
+  const [constraits, setConstraints] = useState(currentSchedule.constraints);
 
   const handleUpdateConstraint = (index: number, field: keyof Constraint) => {
     return (value: any) => {

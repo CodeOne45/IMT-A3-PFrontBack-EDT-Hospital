@@ -11,7 +11,7 @@ export const mockNurses = [
   "Léa",
 ];
 
-export const mockShifts = ["Matin", "Soir", "Nuit"];
+export const mockShifts = ["Morning", "Evening", "Night", "Rest"];
 
 export const mockConstraints: Constraint[] = [
   {
