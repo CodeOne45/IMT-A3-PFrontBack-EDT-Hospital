@@ -7,5 +7,5 @@ export default interface Constraint {
   params?: [],
   type?: number,
   desc?: string,
-
+  id: string,
 }

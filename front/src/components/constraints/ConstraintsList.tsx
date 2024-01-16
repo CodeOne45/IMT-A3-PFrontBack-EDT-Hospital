@@ -1,3 +1,6 @@
+import { Box } from "@mui/material";
+import { green, red } from "@mui/material/colors";
+import { useUpdatedConstraints } from "../../contexts/UpdatedConstraintsContext";
 import { Constraint } from "../../types";
 import { ConstraintsListItem } from "./ConstraintsListItem";
 
@@ -10,8 +13,15 @@ export const ConstraintsList = ({
   onUpdateConstraints: (constraints: Constraint[]) => void;
   isLastVersion: boolean;
 }) => {
+  console.log("render constraints list");
+
+  const { removedConstraints, addedConstraints, setRemovedConstraints } =
+    useUpdatedConstraints();
   let constraintsByType: { [key: string]: Constraint[] } = {};
+
   // regrouper les contraintes par type
+  constraints.filter((c) => !removedConstraints.includes(c.id!));
+
   constraints.forEach((constraint) => {
     if (!constraintsByType[constraint.type!]) {
       constraintsByType[constraint.type!] = [];
@@ -20,19 +30,51 @@ export const ConstraintsList = ({
   });
 
   const removeConstraint = (cons: Constraint) => {
-    console.log("remove constraint", cons.desc);
-    onUpdateConstraints(constraints.filter((c) => c.desc !== cons.desc));
+    console.log("remove constraint", cons.id);
+    removedConstraints.push(cons.id);
+    // setRemovedConstraints([...removedConstraints]);
+    onUpdateConstraints(constraints.filter((c) => c.id !== cons.id));
   };
 
   // afficher les contraintes de chaque type
   return (
     <>
+      {isLastVersion && (
+        <>
+          {addedConstraints.length > 0 && (
+            <Box sx={{ background: green[50] }}>
+              <h2>new Constraints</h2>
+            </Box>
+          )}
+          {addedConstraints.map((constraint) => (
+            <ConstraintsListItem
+              key={constraint}
+              constraint={constraints.find((c) => c.id === constraint)!}
+              onRemove={() => {}}
+              canRemove={false}
+            />
+          ))}
+          {removedConstraints.length > 0 && (
+            <Box sx={{ background: red[50] }}>
+              <h2>Removed Constriants</h2>
+              {removedConstraints.map((constraintId) => (
+                <ConstraintsListItem
+                  key={"removed" + constraintId}
+                  constraint={constraints.find((c) => c.id === constraintId)!}
+                  onRemove={() => {}}
+                  canRemove={false}
+                />
+              ))}
+            </Box>
+          )}
+        </>
+      )}
       {Object.keys(constraintsByType).map((type) => (
         <div key={type}>
           <h2>Category {type}</h2>
           {constraintsByType[type].map((constraint) => (
             <ConstraintsListItem
-              key={`${type}${constraint.desc}`}
+              key={`${type}${constraint.id}`}
               constraint={constraint}
               onRemove={removeConstraint}
               canRemove={isLastVersion}
