@@ -38,15 +38,7 @@ export const ConstraintsListItem = ({
         </Avatar>
       </Button>
       <Typography>
-        <p>{constraint.desc}</p>
-        {constraint.nurses.length > 0 ? (
-          <p>
-            Nurses involved : {constraint.nurses?.map((nurse) => nurse + ", ")}
-          </p>
-        ) : (
-          <></>
-        )}
-        {JSON.stringify(constraint)}
+        {constraint.desc}
       </Typography>
     </Box>
   );
