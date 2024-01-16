@@ -32,7 +32,7 @@ export default function AssignShift(props: AssignShiftProps) {
 
   const handleUpdateConstraint = (index: number, field: keyof Constraint) => {
     return (value: any) => {
-      const newConstraints = [...constraits] as Constraint[];
+      const newConstraints = [...constraits] as any[];
       newConstraints[index][field] = value;
       setConstraints(newConstraints);
     };
