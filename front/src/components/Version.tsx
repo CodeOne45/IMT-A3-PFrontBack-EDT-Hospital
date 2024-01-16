@@ -4,13 +4,11 @@ export const VersionComponent = ({
   versionNumber,
   selectedVersion = false,
 }: {
-  versionNumber: number,
-  selectedVersion?: boolean
+  versionNumber: number;
+  selectedVersion?: boolean;
 }) => {
   return (
-    <div
-      className={`version ${selectedVersion? "version-selected" : null}`}
-    >
+    <div className={`version ${selectedVersion ? "version-selected" : null}`}>
       <div className="version__container">
         <div className="line-container line-container-v">
           <div></div>
@@ -28,7 +26,9 @@ export const VersionComponent = ({
           <div></div>
         </div>
       </div>
-      <p className="version__number">Version {versionNumber}</p>
+      <p className="version__number">
+        {versionNumber === 0 ? "Default" : `Version ${versionNumber}`}
+      </p>
     </div>
   );
 };

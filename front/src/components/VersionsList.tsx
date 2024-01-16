@@ -15,10 +15,9 @@ export const VersionsList = ({
       {Array.from({ length: versions }).map((_, index) => (
         <Button onClick={() => onSelectVersion(index)} key={index}>
           <VersionComponent
-            versionNumber={index + 1}
+            versionNumber={index}
             selectedVersion={index === selectedVersion}
-            
-          />·
+          />
         </Button>
       ))}
     </>
