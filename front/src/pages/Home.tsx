@@ -22,8 +22,6 @@ import { useSchedules } from "../contexts/SchedulesContext";
 export default function Home() {
   const { initSchedules, schedules } = useSchedules();
 
-  const [selectedVersion, setSelectedVersion] = useState(schedules.length - 1); // [0, 1, 2, 3]
-
   const isSelectedVersionLast = () => {
     return selectedVersion === schedules.length - 1;
   };
@@ -31,6 +29,10 @@ export default function Home() {
   const [openModal, setOpenModal] = useState(false);
   const { areRecommandationsShowed, switchShowRecommandations } =
     useRecommandations();
+
+  const [selectedVersion, setSelectedVersion] = useState(0); // [0, 1, 2, 3]
+  console.log("selectedVersion", selectedVersion);
+
   const handleOpenModal = () => {
     setOpenModal(true);
   };
@@ -46,7 +48,8 @@ export default function Home() {
       .then((response) => response.json())
       .then((data) => {
         if (data.length !== 0) {
-          initSchedules(data);
+          initSchedules([...data]);
+          setSelectedVersion(data.length - 1);
           return;
         }
         fetch(`${endPoint}/`, {
@@ -55,6 +58,7 @@ export default function Home() {
           .then((response) => response.json())
           .then((data) => {
             initSchedules([data]);
+            setSelectedVersion(0);
           });
       })
       .catch((error) => {
@@ -65,6 +69,8 @@ export default function Home() {
   if (schedules.length === 0) {
     return <></>;
   }
+
+  console.log("schedules", schedules);
 
   return (
     <>
