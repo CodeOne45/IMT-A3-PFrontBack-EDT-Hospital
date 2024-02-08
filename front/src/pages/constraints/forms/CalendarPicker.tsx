@@ -1,8 +1,7 @@
-import { Box, FormControl, FormControlLabel } from "@mui/material";
+import { Box, FormControl, FormControlLabel, Checkbox } from "@mui/material";
 import React, { useState } from "react";
 import CalendarLabelItem from "./CalendarLabelItem";
 import CalendarItem from "./CalendarItem";
-import { CheckBox } from "@mui/icons-material";
 
 interface CalendarPickerProps {
   selectedDays: number[];
@@ -21,36 +20,41 @@ export default function CalendarPicker(props: CalendarPickerProps) {
   const handleDayClick = (day: number) => {
     if (isWeekSelected) {
       // if the day is already selected, uncheck all the week
+      const dayOfTheWeek = Math.floor(day % 7);
+      const newSelectedDays = selectedDays.filter(
+        (d) => Math.floor(d % 7) !== dayOfTheWeek
+      );
       if (selectedDays.includes(day)) {
-        const dayNumber = day / 7;
-        onSelectDay(selectedDays.filter((d) => d % dayNumber !== 0));
+        onSelectDay(newSelectedDays);
+
         return;
       } else {
         // if the day is not selected, check all the week
-        const dayNumber = day / 7;
-        const newSelectedDays = selectedDays.filter((d) => d % dayNumber !== 0);
-        for (let i = dayNumber; i < 28; i += 7) {
+        for (let i = dayOfTheWeek; i < 28; i += 7) {
           newSelectedDays.push(i);
         }
+        console.log("newSelectedDays", newSelectedDays);
         onSelectDay(newSelectedDays);
         return;
       }
+    } else {
+      onSelectDay(
+        selectedDays.includes(day)
+          ? selectedDays.filter((d) => d !== day)
+          : [...selectedDays, day]
+      );
     }
-    onSelectDay(
-      selectedDays.includes(day)
-        ? selectedDays.filter((d) => d !== day)
-        : [...selectedDays, day]
-    );
   };
 
   return (
     <Box>
       <FormControlLabel
         control={
-          <CheckBox
-            onClick={() => {
+          <Checkbox
+            onChange={() => {
               setIsWeekSelected((prev) => !prev);
             }}
+            checked={isWeekSelected}
           />
         }
         label="Select Week"
@@ -82,13 +86,7 @@ export default function CalendarPicker(props: CalendarPickerProps) {
             <CalendarItem
               day={day}
               selected={selectedDays.includes(day)}
-              onClick={() =>
-                onSelectDay(
-                  selectedDays.includes(day)
-                    ? selectedDays.filter((d) => d !== day)
-                    : [...selectedDays, day]
-                )
-              }
+              onClick={() => handleDayClick(day)}
             />
           ))}
         </Box>
