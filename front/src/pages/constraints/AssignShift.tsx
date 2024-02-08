@@ -1,25 +1,24 @@
 import {
   Autocomplete,
-  TextField,
+  Avatar,
   Box,
+  Button,
+  Checkbox,
   List,
   ListItem,
-  Checkbox,
-  ListItemButton,
   ListItemAvatar,
-  Avatar,
+  ListItemButton,
   ListItemText,
+  TextField,
   Typography,
-  Button,
 } from "@mui/material";
-import ConstraintPage from "./ConstraintPage";
-import CalendarPicker from "./forms/CalendarPicker";
-import { mockConstraints, mockNurses, mockShifts } from "./forms/mocks";
+import { Fragment, useState } from "react";
+import { endPoint } from "../../config";
 import { useSchedules } from "../../contexts/SchedulesContext";
 import { Constraint } from "../../types";
-import { Fragment, useState } from "react";
-import axios from "axios";
-import { endPoint } from "../../config";
+import ConstraintPage from "./ConstraintPage";
+import CalendarPicker from "./forms/CalendarPicker";
+import { mockNurses, mockShifts } from "./forms/mocks";
 
 interface AssignShiftProps {
   onBack: () => void;
@@ -85,10 +84,11 @@ export default function AssignShift(props: AssignShiftProps) {
         },
       ],
     };
-
-    // call api
-    axios
-      .post(`${endPoint}/constraint`, payload)
+    fetch(`${endPoint}/constraint`, {  
+      method: "POST",
+      body: JSON.stringify(payload),
+    })
+      .then((response) => response.json())
       .then((response) => {
         // update context with the new schedule
         addSchedule(response.data);
