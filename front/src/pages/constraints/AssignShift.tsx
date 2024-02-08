@@ -68,7 +68,7 @@ export default function AssignShift(props: AssignShiftProps) {
 
   const handleConstraintSave = (constraint: Constraint) => {
     // extract the number of the id
-    const constraintId = 1;
+    const constraintId = 2;
 
     const payload = {
       id_model: currentSchedule.id_model,
@@ -87,6 +87,9 @@ export default function AssignShift(props: AssignShiftProps) {
     fetch(`${endPoint}/constraint`, {  
       method: "POST",
       body: JSON.stringify(payload),
+      headers: {
+        "Content-Type": "application/json",
+      },
     })
       .then((response) => response.json())
       .then((response) => {
