@@ -159,10 +159,15 @@ export default function CreateConstraintList() {
           {categories
             // .filter((c) => c.name.toLowerCase().includes(search.toLowerCase()))
             .map((category) => {
+              const filteredConstraints = category.constraints.filter((c) =>
+                c.name.toLowerCase().includes(search.toLowerCase())
+              );
+              if (filteredConstraints.length === 0) return null;
+
               return (
                 <Box sx={{ mt: 3 }}>
                   <Typography variant="h6">{category.title}</Typography>
-                  {category.constraints.map((constraint) => (
+                  {filteredConstraints.map((constraint) => (
                     <Box sx={{ mt: 1 }}>
                       <ConstraintItem
                         name={constraint.name}
