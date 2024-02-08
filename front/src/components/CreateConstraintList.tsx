@@ -17,6 +17,7 @@ export default function CreateConstraintList() {
         <AssignShift
           onBack={handleBack}
           title="Assign 1 shift to 1/many nurse(s) once (S,D,N)"
+          id="cst0"
         />
       ),
     },
@@ -119,6 +120,7 @@ export default function CreateConstraintList() {
                       <AssignShift
                         onBack={handleBack}
                         title="Assign 1 shift to 1/many nurse(s) once (S,D,N)"
+                        id="cst0"
                       />
                     );
                   }}

@@ -10,56 +10,138 @@ import {
   Avatar,
   ListItemText,
   Typography,
+  Button,
 } from "@mui/material";
 import ConstraintPage from "./ConstraintPage";
 import CalendarPicker from "./forms/CalendarPicker";
 import { mockConstraints, mockNurses, mockShifts } from "./forms/mocks";
 import { useSchedules } from "../../contexts/SchedulesContext";
 import { Constraint } from "../../types";
-import { useState } from "react";
+import { Fragment, useState } from "react";
+import axios from "axios";
+import { endPoint } from "../../config";
 
 interface AssignShiftProps {
   onBack: () => void;
   title: string;
-  // id: string;
+  id: string;
 }
 
 export default function AssignShift(props: AssignShiftProps) {
-  const { onBack, title } = props;
+  const { onBack, title, id } = props;
 
-  const { schedules } = useSchedules();
+  const { schedules, addSchedule } = useSchedules();
   const currentSchedule = schedules[schedules.length - 1];
 
   console.log("currentSchedule", currentSchedule);
 
-  const [constraits, setConstraints] = useState(currentSchedule.constraints);
+  const [constraints, setConstraints] = useState(
+    currentSchedule.constraints.filter((c) => c.id === id)
+  );
+
+  const handleAddConstraint = () => {
+    const blankConstraint = {
+      id,
+      days: [],
+      shifts: [],
+      nurses: [],
+    };
+    setConstraints([blankConstraint, ...constraints]);
+  };
 
   const handleUpdateConstraint = (index: number, field: keyof Constraint) => {
     return (value: any) => {
-      const newConstraints = [...constraits] as any[];
+      const newConstraints = [...constraints] as any[];
       newConstraints[index][field] = value;
       setConstraints(newConstraints);
     };
   };
 
+  const checkIfConstraintIsNew = (constraint: Constraint) => {
+    return !currentSchedule.constraints.find(
+      (c) =>
+        c.id === constraint.id &&
+        c.shifts === constraint.shifts &&
+        c.days === constraint.days &&
+        c.nurses === constraint.nurses
+    );
+  };
+
+  const handleConstraintSave = (constraint: Constraint) => {
+    // extract the number of the id
+    const constraintId = 1;
+
+    const payload = {
+      id_model: currentSchedule.id_model,
+      iteration: true,
+      id_iteration: -1,
+      new_constraints: [
+        {
+          id: constraintId,
+          days: constraint.days,
+          shifts: constraint.shifts,
+          nurses: constraint.nurses,
+          params: [],
+        },
+      ],
+    };
+
+    // call api
+    axios
+      .post(`${endPoint}/constraint`, payload)
+      .then((response) => {
+        // update context with the new schedule
+        addSchedule(response.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
   return (
     <ConstraintPage onBack={onBack}>
       <Box>
-        <Typography sx={{ fontSize: "20px", fontWeight: "bold", mb: 4 }}>
+        <Typography sx={{ fontSize: "20px", fontWeight: "bold", mt: 2, mb: 2 }}>
           {title}
         </Typography>
 
+        <Button
+          variant="contained"
+          onClick={handleAddConstraint}
+          color="primary"
+          sx={{ mb: 4 }}
+        >
+          Add constraint
+        </Button>
+
         <Box>
-          {constraits.map((constraint, index) => (
-            <>
-              <Typography
+          {constraints.map((constraint, index) => (
+            <Fragment key={`constraint-${index}`}>
+              <Box
                 sx={{
-                  textDecoration: "underline",
-                  fontWeight: "bold",
+                  display: "flex",
+                  alignItems: "ceneter",
+                  justifyContent: "space-between",
                 }}
               >
-                #{index + 1} constraint
-              </Typography>
+                <Typography
+                  sx={{
+                    textDecoration: "underline",
+                    fontWeight: "bold",
+                  }}
+                >
+                  #{constraints.length - index} constraint
+                </Typography>
+                {checkIfConstraintIsNew(constraint) && (
+                  <Button
+                    variant="contained"
+                    onClick={() => handleConstraintSave(constraint)}
+                    color="success"
+                  >
+                    Save
+                  </Button>
+                )}
+              </Box>
               <Box
                 sx={{
                   display: "grid",
@@ -90,7 +172,7 @@ export default function AssignShift(props: AssignShiftProps) {
                     }
                     onChange={(event, value) => {
                       const shiftIndex = mockShifts.indexOf(value as string);
-                      handleUpdateConstraint(index, "shifts")(shiftIndex);
+                      handleUpdateConstraint(index, "shifts")([shiftIndex]);
                     }}
                   />
                 </Box>
@@ -159,9 +241,10 @@ export default function AssignShift(props: AssignShiftProps) {
                   width: "100%",
                   height: "1px",
                   backgroundColor: "rgba(0, 0, 0, 0.12)",
+                  mb: 4,
                 }}
               />
-            </>
+            </Fragment>
           ))}
         </Box>
       </Box>
