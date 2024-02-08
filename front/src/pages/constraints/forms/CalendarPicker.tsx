@@ -58,7 +58,7 @@ export default function CalendarPicker(props: CalendarPickerProps) {
           />
         }
         label="Select Week"
-        sx={{ ml: 2, mb: 2 }}
+        sx={{ mb: 2 }}
       />
       <Box
         sx={{
