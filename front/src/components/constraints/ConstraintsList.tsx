@@ -76,8 +76,14 @@ export const ConstraintsList = ({
         </>
       )}
       {Object.keys(constraintsByType).map((type) => (
-        <div key={type}>
-          <h2>Category {type}</h2>
+        <Box
+          sx={{
+            gridTemplateColumns: "1fr 1fr",
+            display: "grid",
+            margin: "10px",
+          }}
+          key={type}
+        >
           {constraintsByType[type].map((constraint) => (
             <ConstraintsListItem
               key={`${type}${constraint.id}`}
@@ -86,7 +92,7 @@ export const ConstraintsList = ({
               canRemove={isLastVersion}
             />
           ))}
-        </div>
+        </Box>
       ))}
     </>
   );

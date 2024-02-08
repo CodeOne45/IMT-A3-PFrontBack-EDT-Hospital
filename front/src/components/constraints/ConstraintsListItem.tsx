@@ -5,14 +5,17 @@ export const ConstraintsListItem = ({
   onRemove,
   constraint,
   canRemove,
+  style,
 }: {
   onRemove: (cons: Constraint) => void;
   constraint: Constraint;
   canRemove: boolean;
+  style?: {};
 }) => {
   return (
     <Box
       sx={{
+        ...style,
         display: "flex",
         flex: "1 1 0",
         alignContent: "center",
