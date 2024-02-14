@@ -12,6 +12,7 @@ import { useEffect, useState } from "react";
 import CreateConstraintList from "../components/CreateConstraintList";
 import { AffectationTable } from "../components/affectationsTable/AffectationsTable";
 
+import { ResumeAffectations } from "../components/ResumeAffectations";
 import { VersionsList } from "../components/VersionsList";
 import { ConstraintsList } from "../components/constraints/ConstraintsList";
 import { endPoint } from "../config";
@@ -120,6 +121,13 @@ export default function Home() {
             label="Recommandation"
           />
           <AffectationTable schedule={schedules[selectedVersion]} />
+
+          <ResumeAffectations
+            nbAffectionsPerNurse={Object.values(
+              schedules[selectedVersion].nbr_shift_per_nurse
+            ).map((value) => value)}
+          />
+
           {isSelectedVersionLast() ? (
             <Button
               variant="contained"

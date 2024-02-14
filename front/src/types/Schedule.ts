@@ -12,4 +12,5 @@ export default interface Schedule {
   preferences: number[][];
   nb_nurses: number;
   id_model: number;
+  nbr_shift_per_nurse: { [key: number]: number[] };
 }

@@ -18,16 +18,6 @@ export const AffectationTableItem = ({
   iNurse,
 }: {
   recommandations: Recommandation[];
-  // recommandations:  {
-  //   text: string | undefined;
-  //   shift:
-  //     | {
-  //         day: number;
-  //         shift: number;
-  //         nurse: number;
-  //       }
-  //     | undefined;
-  // }[];
   affectation: {
     name: string;
     days: JSX.Element[];
@@ -71,7 +61,6 @@ export const AffectationTableItem = ({
   return (
     <tr key={affectation.name}>
       <td>{affectation.name}</td>
-      {}
       {affectation.days.map((day, iJours) => {
         const reco = recommandations.find(
           (r) =>
