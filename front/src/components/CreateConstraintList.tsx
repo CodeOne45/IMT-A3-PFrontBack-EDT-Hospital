@@ -2,8 +2,8 @@ import { Box, TextField, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import { endPoint } from "../config";
 import { useUpdatedConstraints } from "../contexts/UpdatedConstraintsContext";
-import AssignShift from "../pages/constraints/AssignShift";
 import ConstraintItem from "./CreateConstraintItem";
+import GenericForm from "../pages/constraints/forms/GenericForm";
 
 export default function CreateConstraintList() {
   const [component, setComponent] = useState<JSX.Element | undefined>(
@@ -34,14 +34,19 @@ export default function CreateConstraintList() {
           );
           console.log(constraint);
 
-          // TODO : fix
-          setComponent(
-            <AssignShift
-              onBack={handleBack}
-              title={constraint!.name}
-              id={`${constraint!.id}`}
-            />
-          );
+          // if (constraintFromRecommandation) {
+          //   console.log(constraintFromRecommandation);
+          //   const constraint = constraints.find(
+          //     (c) => c.id === constraintFromRecommandation.type
+          //   );
+          //   // TODO : fix
+          //   setComponent(
+          //     <AssignShift
+          //       onBack={handleBack}
+          //       title={constraint!.name}
+          //       id={`${constraint!.id}`}
+          //     />
+          //   );
         }
       });
   }, []);
@@ -63,10 +68,29 @@ export default function CreateConstraintList() {
     constraints: constraints
       .filter((c) => [1, 2, 3, 4, 5].includes(c.id))
       .map((c) => {
+        // the params are in the name at the very end between parenthesis
+        // ex: "Assign 1 shift to 1/many nurse(s) once (S,D,N)"
+        const parsedParams = c.name.match(/\(([^)]+)\)$/i)![1];
+        console.log(c.name);
+        console.log("parsedParams", parsedParams);
+        console.log(parsedParams.includes("S"));
+        const S = parsedParams.includes("S");
+        const D = parsedParams.includes("D");
+        const N = parsedParams.includes("N");
+        const P = parsedParams.includes("P");
+
         return {
           name: c.name,
           component: (
-            <AssignShift onBack={handleBack} title={c.name} id={`cst${c.id}`} />
+            <GenericForm
+              onBack={handleBack}
+              title={c.name}
+              id={c.id}
+              S={S}
+              D={D}
+              N={N}
+              P={P}
+            />
           ),
         };
       }),
@@ -77,10 +101,26 @@ export default function CreateConstraintList() {
     constraints: constraints
       .filter((c) => [6, 7].includes(c.id))
       .map((c) => {
+        // the params are in the name at the very end between parenthesis
+        // ex: "Assign 1 shift to 1/many nurse(s) once (S,D,N)"
+        const parsedParams = c.name.match(/\(([^)]+)\)/);
+        const S = parsedParams![1].includes("S");
+        const D = parsedParams![1].includes("D");
+        const N = parsedParams![1].includes("N");
+        const P = parsedParams![1].includes("P");
+
         return {
           name: c.name,
           component: (
-            <AssignShift onBack={handleBack} title={c.name} id={`cst${c.id}`} />
+            <GenericForm
+              onBack={handleBack}
+              title={c.name}
+              id={c.id}
+              S={S}
+              D={D}
+              N={N}
+              P={P}
+            />
           ),
         };
       }),
@@ -91,10 +131,26 @@ export default function CreateConstraintList() {
     constraints: constraints
       .filter((c) => [9].includes(c.id))
       .map((c) => {
+        // the params are in the name at the very end between parenthesis
+        // ex: "Assign 1 shift to 1/many nurse(s) once (S,D,N)"
+        const parsedParams = c.name.match(/\(([^)]+)\)/);
+        const S = parsedParams![1].includes("S");
+        const D = parsedParams![1].includes("D");
+        const N = parsedParams![1].includes("N");
+        const P = parsedParams![1].includes("P");
+
         return {
           name: c.name,
           component: (
-            <AssignShift onBack={handleBack} title={c.name} id={`cst${c.id}`} />
+            <GenericForm
+              onBack={handleBack}
+              title={c.name}
+              id={c.id}
+              S={S}
+              D={D}
+              N={N}
+              P={P}
+            />
           ),
         };
       }),
@@ -105,10 +161,26 @@ export default function CreateConstraintList() {
     constraints: constraints
       .filter((c) => [10, 13, 14, 16, 18, 19, 20, 21].includes(c.id))
       .map((c) => {
+        // the params are in the name at the very end between parenthesis
+        // ex: "Assign 1 shift to 1/many nurse(s) once (S,D,N)"
+        const parsedParams = c.name.match(/\(([^)]+)\)/);
+        const S = parsedParams![1].includes("S");
+        const D = parsedParams![1].includes("D");
+        const N = parsedParams![1].includes("N");
+        const P = parsedParams![1].includes("P");
+
         return {
           name: c.name,
           component: (
-            <AssignShift onBack={handleBack} title={c.name} id={`cst${c.id}`} />
+            <GenericForm
+              onBack={handleBack}
+              title={c.name}
+              id={c.id}
+              S={S}
+              D={D}
+              N={N}
+              P={P}
+            />
           ),
         };
       }),
@@ -119,10 +191,26 @@ export default function CreateConstraintList() {
     constraints: constraints
       .filter((c) => [5, 8, 11, 12, 15, 17].includes(c.id))
       .map((c) => {
+        // the params are in the name at the very end between parenthesis
+        // ex: "Assign 1 shift to 1/many nurse(s) once (S,D,N)"
+        const parsedParams = c.name.match(/\(([^)]+)\)/);
+        const S = parsedParams![1].includes("S");
+        const D = parsedParams![1].includes("D");
+        const N = parsedParams![1].includes("N");
+        const P = parsedParams![1].includes("P");
+
         return {
           name: c.name,
           component: (
-            <AssignShift onBack={handleBack} title={c.name} id={`cst${c.id}`} />
+            <GenericForm
+              onBack={handleBack}
+              title={c.name}
+              id={c.id}
+              S={S}
+              D={D}
+              N={N}
+              P={P}
+            />
           ),
         };
       }),
@@ -167,13 +255,7 @@ export default function CreateConstraintList() {
                       <ConstraintItem
                         name={constraint.name}
                         onClick={() => {
-                          setComponent(
-                            <AssignShift
-                              onBack={handleBack}
-                              title="Assign 1 shift to 1/many nurse(s) once (S,D,N)"
-                              id="cst0"
-                            />
-                          );
+                          setComponent(constraint.component);
                         }}
                       />
                     </Box>
