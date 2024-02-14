@@ -1,7 +1,7 @@
-import { Box, FormControl, FormControlLabel, Checkbox } from "@mui/material";
-import React, { useState } from "react";
-import CalendarLabelItem from "./CalendarLabelItem";
+import { Box, Checkbox, FormControlLabel } from "@mui/material";
+import { useState } from "react";
 import CalendarItem from "./CalendarItem";
+import CalendarLabelItem from "./CalendarLabelItem";
 
 interface CalendarPickerProps {
   selectedDays: number[];
@@ -79,11 +79,12 @@ export default function CalendarPicker(props: CalendarPickerProps) {
             paddingTop: "10px",
           }}
         >
-          {days.map((day) => (
-            <CalendarLabelItem title={day} />
+          {days.map((day, i) => (
+            <CalendarLabelItem key={i + day} title={day} />
           ))}
-          {dayNumber.map((day) => (
+          {dayNumber.map((day, j) => (
             <CalendarItem
+              key={j + day}
               day={day}
               selected={selectedDays.includes(day)}
               onClick={() => handleDayClick(day)}

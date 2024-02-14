@@ -7,18 +7,9 @@ import { Schedule } from "../../types";
 import "./AffectationsTable.scss";
 import { AffectationTableItem } from "./AffectationsTableItem";
 export const AffectationTable = ({ schedule }: { schedule: Schedule }) => {
-
   if (!schedule) {
     return <></>;
   }
-  const recomm = schedule.recommendations.map((r) => {
-    const ret = {
-      text: r.text,
-      shift: r.shifts?.[0],
-    };
-    return ret;
-  });
-  
 
   const dayTable = [];
   for (let i = 0; i < schedule.schedule[0].length; i++) {
@@ -56,7 +47,7 @@ export const AffectationTable = ({ schedule }: { schedule: Schedule }) => {
           {affectations.map((affectation, iNurse) => (
             <AffectationTableItem
               key={affectation.name}
-              recommandations={recomm}
+              recommandations={schedule.recommendations}
               affectation={affectation}
               iNurse={iNurse}
             />

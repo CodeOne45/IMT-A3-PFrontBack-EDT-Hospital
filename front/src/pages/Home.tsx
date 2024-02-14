@@ -18,6 +18,7 @@ import { ConstraintsList } from "../components/constraints/ConstraintsList";
 import { endPoint } from "../config";
 import { useRecommandations } from "../contexts/RecommandationsContext";
 import { useSchedules } from "../contexts/SchedulesContext";
+import { useUpdatedConstraints } from "../contexts/UpdatedConstraintsContext";
 
 export default function Home() {
   const { initSchedules, schedules } = useSchedules();
@@ -30,6 +31,9 @@ export default function Home() {
   const { areRecommandationsShowed, switchShowRecommandations } =
     useRecommandations();
 
+  const { constraintFromRecommandation, setConstraintFromRecommandation } =
+    useUpdatedConstraints();
+
   const [selectedVersion, setSelectedVersion] = useState(0); // [0, 1, 2, 3]
   console.log("selectedVersion", selectedVersion);
 
@@ -38,6 +42,7 @@ export default function Home() {
   };
 
   const handleCloseModal = () => {
+    setConstraintFromRecommandation(undefined);
     setOpenModal(false);
   };
 
@@ -66,11 +71,15 @@ export default function Home() {
       });
   }, []);
 
+  useEffect(() => {
+    if (constraintFromRecommandation) {
+      handleOpenModal();
+    }
+  }, [constraintFromRecommandation]);
+
   if (schedules.length === 0) {
     return <></>;
   }
-
-  console.log("schedules", schedules);
 
   return (
     <>

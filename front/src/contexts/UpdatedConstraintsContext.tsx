@@ -8,6 +8,8 @@ interface UpdatedConstraintsContextProps {
   setRemovedConstraints: (constraints: string[]) => void;
   reset: () => void;
   init: () => void;
+  constraintFromRecommandation: Constraint | undefined;
+  setConstraintFromRecommandation: (constraint: Constraint | undefined) => void;
 }
 
 const UpdatedConstraintsContext = createContext<UpdatedConstraintsContextProps>(
@@ -18,6 +20,8 @@ const UpdatedConstraintsContext = createContext<UpdatedConstraintsContextProps>(
     setRemovedConstraints: () => {},
     reset: () => {},
     init: () => {},
+    constraintFromRecommandation: undefined,
+    setConstraintFromRecommandation: () => {},
   }
 );
 
@@ -28,6 +32,8 @@ export const UpdatedConstraintsContextProvider = ({
 }) => {
   const [removedConstraints, _setRemovedConstraints] = useState<string[]>([]);
   const [addedConstraints, _setAddedConstraints] = useState<Constraint[]>([]);
+  const [constraintFromRecommandation, _setConstraintFromRecommandation] =
+    useState<Constraint | undefined>(undefined);
 
   const reset = () => {
     _setRemovedConstraints([]);
@@ -35,7 +41,6 @@ export const UpdatedConstraintsContextProvider = ({
   };
 
   const init = () => {
-
     _setRemovedConstraints(
       JSON.parse(localStorage.getItem("removedConstraints") || "[]") as string[]
     );
@@ -57,6 +62,12 @@ export const UpdatedConstraintsContextProvider = ({
     _setAddedConstraints(constraints);
   };
 
+  const setConstraintFromRecommandation = (
+    constraint: Constraint | undefined
+  ) => {
+    _setConstraintFromRecommandation(constraint);
+  };
+
   return (
     <UpdatedConstraintsContext.Provider
       value={{
@@ -66,6 +77,8 @@ export const UpdatedConstraintsContextProvider = ({
         setRemovedConstraints,
         reset,
         init,
+        constraintFromRecommandation,
+        setConstraintFromRecommandation,
       }}
     >
       {children}

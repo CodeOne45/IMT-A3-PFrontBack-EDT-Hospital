@@ -2,6 +2,8 @@ import { Info } from "@mui/icons-material";
 import { Box, Popover } from "@mui/material";
 import { useState } from "react";
 import { useRecommandations } from "../../contexts/RecommandationsContext";
+import { useUpdatedConstraints } from "../../contexts/UpdatedConstraintsContext";
+import { Recommandation } from "../../types";
 
 /**
  *
@@ -15,16 +17,17 @@ export const AffectationTableItem = ({
   affectation,
   iNurse,
 }: {
-  recommandations: {
-    text: string | undefined;
-    shift:
-      | {
-          day: number;
-          shift: number;
-          nurse: number;
-        }
-      | undefined;
-  }[];
+  recommandations: Recommandation[];
+  // recommandations:  {
+  //   text: string | undefined;
+  //   shift:
+  //     | {
+  //         day: number;
+  //         shift: number;
+  //         nurse: number;
+  //       }
+  //     | undefined;
+  // }[];
   affectation: {
     name: string;
     days: JSX.Element[];
@@ -37,6 +40,7 @@ export const AffectationTableItem = ({
     setAnchorEl(event.currentTarget);
   };
 
+  const { setConstraintFromRecommandation } = useUpdatedConstraints();
   const handlePopoverClose = () => {
     setAnchorEl(null);
   };
@@ -69,26 +73,28 @@ export const AffectationTableItem = ({
       <td>{affectation.name}</td>
       {}
       {affectation.days.map((day, iJours) => {
+        const reco = recommandations.find(
+          (r) =>
+            r.shifts![0].day === iJours + 1 && r.shifts![0].nurse === iNurse + 1
+        );
+
         let classs = "";
         classs += `${valueToClass(day.key ?? "")} `;
-        if (
-          areRecommandationsShowed &&
-          recommandations.find(
-            (r) => r.shift?.day === iJours + 1 && r.shift.nurse === iNurse + 1
-          ) != null
-        )
-          classs += "recomand ";
+
+        if (areRecommandationsShowed && reco) classs += "recomand ";
 
         return (
           <td
             className={classs}
             key={`${iNurse}${iJours}`}
             style={{ position: "relative" }}
+            onClick={() => {
+              if (areRecommandationsShowed && reco) {
+                setConstraintFromRecommandation(reco.constraint!);
+              }
+            }}
           >
-            {areRecommandationsShowed &&
-            recommandations.find(
-              (r) => r.shift?.day === iJours + 1 && r.shift.nurse === iNurse + 1
-            ) ? (
+            {areRecommandationsShowed && reco ? (
               <>
                 <Box
                   sx={{
@@ -120,13 +126,7 @@ export const AffectationTableItem = ({
                   onClose={handlePopoverClose}
                   disableRestoreFocus
                 >
-                  {
-                    recommandations.find(
-                      (r) =>
-                        r.shift?.day === iJours + 1 &&
-                        r.shift.nurse === iNurse + 1
-                    )?.text
-                  }
+                  {reco!.text}
                 </Popover>
               </>
             ) : null}
