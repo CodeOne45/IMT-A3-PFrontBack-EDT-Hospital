@@ -13,7 +13,6 @@ export const ConstraintsList = ({
   onUpdateConstraints: (constraints: Constraint[]) => void;
   isLastVersion: boolean;
 }) => {
-  console.log("render constraints list");
 
   const { removedConstraints, addedConstraints, setRemovedConstraints } =
     useUpdatedConstraints();

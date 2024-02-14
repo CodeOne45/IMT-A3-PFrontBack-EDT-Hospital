@@ -32,7 +32,6 @@ export default function AssignShift(props: AssignShiftProps) {
   const { schedules, addSchedule } = useSchedules();
   const currentSchedule = schedules[schedules.length - 1];
 
-  console.log("currentSchedule", currentSchedule);
 
   const [constraints, setConstraints] = useState(
     currentSchedule.constraints.filter((c) => c.id === id)

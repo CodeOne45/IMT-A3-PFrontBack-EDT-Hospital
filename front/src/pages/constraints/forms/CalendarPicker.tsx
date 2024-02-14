@@ -33,7 +33,6 @@ export default function CalendarPicker(props: CalendarPickerProps) {
         for (let i = dayOfTheWeek; i < 28; i += 7) {
           newSelectedDays.push(i);
         }
-        console.log("newSelectedDays", newSelectedDays);
         onSelectDay(newSelectedDays);
         return;
       }

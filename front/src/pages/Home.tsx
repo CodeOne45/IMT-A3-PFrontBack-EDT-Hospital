@@ -35,7 +35,6 @@ export default function Home() {
     useUpdatedConstraints();
 
   const [selectedVersion, setSelectedVersion] = useState(0); // [0, 1, 2, 3]
-  console.log("selectedVersion", selectedVersion);
 
   const handleOpenModal = () => {
     setOpenModal(true);
