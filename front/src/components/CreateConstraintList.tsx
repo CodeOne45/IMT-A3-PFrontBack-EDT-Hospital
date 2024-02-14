@@ -27,22 +27,23 @@ export default function CreateConstraintList() {
           return { id: parseInt(id), name: "" + name };
         });
         setConstraints(constraints);
-      });
+        if (constraintFromRecommandation) {
+          console.log(constraintFromRecommandation);
+          const constraint = constraints.find(
+            (c) => c.id === constraintFromRecommandation.type
+          );
+          console.log(constraint);
 
-    if (constraintFromRecommandation) {
-      console.log(constraintFromRecommandation);
-      const constraint = constraints.find(
-        (c) => c.id === constraintFromRecommandation.type
-      );
-      // TODO : fix
-      setComponent(
-        <AssignShift
-          onBack={handleBack}
-          title={constraint!.name}
-          id={`${constraint!.id}`}
-        />
-      );
-    }
+          // TODO : fix
+          setComponent(
+            <AssignShift
+              onBack={handleBack}
+              title={constraint!.name}
+              id={`${constraint!.id}`}
+            />
+          );
+        }
+      });
   }, []);
 
   type Category = {
