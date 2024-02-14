@@ -82,6 +82,10 @@ export const AffectationTableItem = ({
                 setConstraintFromRecommandation(reco.constraint!);
               }
             }}
+            onMouseEnter={(event) =>
+              areRecommandationsShowed && reco && handlePopoverOpen(event)
+            }
+            onMouseLeave={handlePopoverClose}
           >
             {areRecommandationsShowed && reco ? (
               <>
@@ -95,8 +99,6 @@ export const AffectationTableItem = ({
                   }}
                   aria-owns={open ? "mouse-over-popover" : undefined}
                   aria-haspopup="true"
-                  onMouseEnter={handlePopoverOpen}
-                  onMouseLeave={handlePopoverClose}
                 >
                   <Info
                     sx={{
