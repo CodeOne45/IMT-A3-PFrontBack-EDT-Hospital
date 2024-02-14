@@ -19,6 +19,7 @@ import { useSchedules } from "../../../contexts/SchedulesContext";
 import { Constraint } from "../../../types";
 import { endPoint } from "../../../config";
 import { mockNurses, mockShifts } from "./mocks";
+import { Console } from "console";
 
 interface GenericFormProps {
   onBack: () => void;
@@ -32,6 +33,8 @@ interface GenericFormProps {
 
 export default function GenericForm(props: GenericFormProps) {
   const { onBack, id, title, S, D, N, P } = props;
+
+  const numberOfParams = (S ? 1 : 0) + (D ? 1 : 0) + (N ? 1 : 0) + (P ? 1 : 0);
 
   const { schedules, addSchedule } = useSchedules();
   const currentSchedule = schedules[schedules.length - 1];
@@ -90,6 +93,50 @@ export default function GenericForm(props: GenericFormProps) {
   };
 
   const handleUpdateConstraint = (index: number, field: keyof Constraint) => {
+    if (field === "shifts") {
+      //  convert M, E, N, R to 0, 1, 2, 3
+      // use the coma to split the string
+
+      const convertShifts = (shifts: string) => {
+        let splitShifts;
+        if (shifts.includes(",")) splitShifts = shifts.split(",");
+        else if (shifts.length === 1) {
+          splitShifts = [shifts];
+          console.log("splitShifts", splitShifts);
+        } else {
+          return [];
+        }
+
+        return splitShifts
+          .map((shift: string) => {
+            switch (shift) {
+              case "M":
+                return 1;
+              case "E":
+                return 2;
+              case "N":
+                return 3;
+              case "R":
+                return 4;
+              default:
+                return undefined;
+            }
+          })
+          .filter((shift: number | undefined) => {
+            // remove undefined from the array
+            return shift !== undefined;
+          });
+      };
+
+      return (value: any) => {
+        console.log("value", value);
+        console.log("convertShifts(value)", convertShifts(value));
+        const newConstraints = [...constraints] as any[];
+        newConstraints[index]["shifts"] = convertShifts(value);
+        setConstraints(newConstraints);
+      };
+    }
+
     return (value: any) => {
       const newConstraints = [...constraints] as any[];
       newConstraints[index][field] = value;
@@ -144,12 +191,28 @@ export default function GenericForm(props: GenericFormProps) {
               <Box
                 sx={{
                   display: "grid",
-                  gridTemplateColumns: "repeat(3, 1fr)",
+                  gridTemplateColumns: `repeat(${numberOfParams}, 1fr)`,
                   gap: "40px",
                   padding: "10px",
                 }}
               >
-                // D
+                {P && (
+                  <Box>
+                    <Typography sx={{ fontSize: "14px", mb: 2 }}>
+                      Parameters
+                    </Typography>
+                    <TextField
+                      label="Parameters"
+                      value={constraint.params}
+                      onChange={(e) => {
+                        handleUpdateConstraint(index, "params")(e.target.value);
+                      }}
+                      placeholder="Enter parameters"
+                      fullWidth
+                    />
+                  </Box>
+                )}
+
                 {D && (
                   <Box>
                     <Typography sx={{ fontSize: "14px", mb: 2 }}>
@@ -167,7 +230,7 @@ export default function GenericForm(props: GenericFormProps) {
                     <Typography sx={{ fontSize: "14px", mb: 2 }}>
                       Shift
                     </Typography>
-                    <Autocomplete
+                    {/* <Autocomplete
                       disablePortal
                       options={mockShifts}
                       renderInput={(params) => (
@@ -180,6 +243,14 @@ export default function GenericForm(props: GenericFormProps) {
                         const shiftIndex = mockShifts.indexOf(value as string);
                         handleUpdateConstraint(index, "shifts")([shiftIndex]);
                       }}
+                    /> */}
+                    <TextField
+                      label="Shift"
+                      onChange={(e) => {
+                        handleUpdateConstraint(index, "shifts")(e.target.value);
+                      }}
+                      placeholder="Select a shift (M, E, N, R) use coma to separate"
+                      fullWidth
                     />
                   </Box>
                 )}
