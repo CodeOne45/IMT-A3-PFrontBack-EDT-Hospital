@@ -10,7 +10,6 @@ import {
 } from "@mui/material";
 import { useEffect, useState } from "react";
 import CreateConstraintList from "../components/CreateConstraintList";
-import SideMenu from "../components/SideMenu";
 import { AffectationTable } from "../components/affectationsTable/AffectationsTable";
 
 import { VersionsList } from "../components/VersionsList";
@@ -100,7 +99,6 @@ export default function Home() {
           height: "calc(100vh - 60px)",
         }}
       >
-        <SideMenu />
         <Box sx={{ p: 4, overflowX: "scroll", flex: 1 }}>
           <Box sx={{ display: "flex", alignItems: "center" }}>
             <VersionsList
