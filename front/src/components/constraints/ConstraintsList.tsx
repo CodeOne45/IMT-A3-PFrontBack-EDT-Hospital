@@ -1,4 +1,11 @@
-import { Box } from "@mui/material";
+import { ExpandMore } from "@mui/icons-material";
+import {
+  Accordion,
+  AccordionDetails,
+  AccordionSummary,
+  Box,
+  Typography,
+} from "@mui/material";
 import { green, red } from "@mui/material/colors";
 import { useUpdatedConstraints } from "../../contexts/UpdatedConstraintsContext";
 import { Constraint } from "../../types";
@@ -13,7 +20,6 @@ export const ConstraintsList = ({
   onUpdateConstraints: (constraints: Constraint[]) => void;
   isLastVersion: boolean;
 }) => {
-
   const { removedConstraints, addedConstraints, setRemovedConstraints } =
     useUpdatedConstraints();
   let constraintsByType: { [key: string]: Constraint[] } = {};
@@ -27,12 +33,14 @@ export const ConstraintsList = ({
       }
       constraintsByType[constraint.type!].push(constraint);
     });
-
+  /**
+   * removes a constraint from the list
+   * @param cons constraint to remove
+   */
   const removeConstraint = (cons: Constraint) => {
     console.log("remove constraint", cons.id);
     removedConstraints.push(cons.id);
     setRemovedConstraints([...removedConstraints]);
-    // onUpdateConstraints(constraints.filter((c) => c.id !== cons.id));
   };
 
   // afficher les contraintes de chaque type
@@ -55,7 +63,7 @@ export const ConstraintsList = ({
           )}
           {removedConstraints.length > 0 && (
             <Box sx={{ background: red[50] }}>
-              <h2>Removed Constriants</h2>
+              <Typography>Removed Constriants</Typography>
               {removedConstraints.map((constraintId) => (
                 <ConstraintsListItem
                   key={"removed" + constraintId}
@@ -74,24 +82,35 @@ export const ConstraintsList = ({
           )}
         </>
       )}
-      {Object.keys(constraintsByType).map((type) => (
-        <Box
-          sx={{
-            gridTemplateColumns: "1fr 1fr",
-            display: "grid",
-            margin: "10px",
-          }}
+      {Object.keys(constraintsByType).map((type, i) => (
+        <Accordion
           key={type}
+          style={{ backgroundColor: i % 2 === 0 ? "#eee" : "#fff" }}
         >
-          {constraintsByType[type].map((constraint) => (
-            <ConstraintsListItem
-              key={`${type}${constraint.id}`}
-              constraint={constraint}
-              onRemove={removeConstraint}
-              canRemove={isLastVersion}
-            />
-          ))}
-        </Box>
+          <AccordionSummary
+            expandIcon={<ExpandMore />}
+            id="panel-header"
+            aria-controls="panel-content"
+          >
+            <h3>{constraintsByType[type][0].name}</h3>
+          </AccordionSummary>
+          <AccordionDetails
+            sx={{
+              gridTemplateColumns: "1fr 1fr",
+              display: "grid",
+              margin: "10px",
+            }}
+          >
+            {constraintsByType[type].map((constraint) => (
+              <ConstraintsListItem
+                key={constraint.id}
+                constraint={constraint}
+                onRemove={removeConstraint}
+                canRemove={isLastVersion}
+              />
+            ))}
+          </AccordionDetails>
+        </Accordion>
       ))}
     </>
   );
